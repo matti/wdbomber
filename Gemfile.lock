@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    wdbomber (0.1.1)
+    wdbomber (0.1.2)
       superbot-selenium-webdriver
 
 GEM

@@ -12,8 +12,12 @@ Signal.trap("INT") {
 }
 
 module Wdbomber
-  def self.run!(endpoint, iterations:, concurrency:1, concurrency_delay:0, actions:1)
-    STDERR.puts "attacking #{endpoint} #{iterations} times with #{concurrency} bombers"
+  def self.run!(endpoint, iterations:, concurrency:1, concurrency_delay:0, actions:1, rampup: nil)
+    STDERR.puts "attacking #{endpoint}"
+    STDERR.puts "  iterations: #{iterations}"
+    STDERR.puts "  concurrency: #{concurrency}"
+    STDERR.puts "  actions: #{actions}"
+    STDERR.puts "  rampup: #{rampup}"
 
     desired_capabilities = Selenium::WebDriver::Remote::Capabilities.chrome
     if ENV["SUPERBOT_REGION"]
@@ -27,6 +31,12 @@ module Wdbomber
       sleep t*concurrency_delay #for specs
 
       threads << Thread.new do
+        if rampup
+          my_rampup = rand(rampup).floor
+          puts "#{bomber}: starting after #{my_rampup} rampup"
+          sleep my_rampup
+          puts "#{bomber}: started"
+        end
         iterations.times do |i|
           if $SHUTDOWN_REQUESTED
             puts "#{bomber}: SHUTDOWN"
