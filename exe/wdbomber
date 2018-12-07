@@ -10,8 +10,14 @@ STDOUT.sync = true
 
 require 'wdbomber'
 
+unless ARGV[0]
+  puts "wdbomber URL iterations concurrency actions"
+  exit 1
+end
+
 endpoint = ARGV[0]
 iterations = ARGV[1] ? Integer(ARGV[1]) : 0
 concurrency = ARGV[2] ? Integer(ARGV[2]) : 1
+actions = ARGV[3] ? Integer(ARGV[3]) : 1
 
-Wdbomber.run! endpoint, iterations: iterations, concurrency: concurrency
+Wdbomber.run! endpoint, iterations: iterations, concurrency: concurrency, actions: actions

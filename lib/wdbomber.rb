@@ -12,7 +12,7 @@ Signal.trap("INT") {
 }
 
 module Wdbomber
-  def self.run!(endpoint, iterations:, concurrency:1, concurrency_delay:0)
+  def self.run!(endpoint, iterations:, concurrency:1, concurrency_delay:0, actions:1)
     STDERR.puts "attacking #{endpoint} #{iterations} times with #{concurrency} bombers"
 
     desired_capabilities = Selenium::WebDriver::Remote::Capabilities.chrome
@@ -43,7 +43,9 @@ module Wdbomber
             desired_capabilities: desired_capabilities,
             http_client: client,
           }
-          driver.navigate.to "about:blank"
+          actions.times do
+            driver.navigate.to "about:blank"
+          end
           took = Time.now - started_at
 
           puts "#{bomber}: took #{took.floor(1)}s (##{iteration}/#{iterations})"
