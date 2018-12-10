@@ -70,5 +70,6 @@ module Wdbomber
     end
 
     threads.each(&:join)
+    STDERR.puts "OK"
   end
 end
